@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 ////
 //  젤리의 AI 동작
@@ -10,18 +12,26 @@ using UnityEngine;
 
 enum State
 {
-    doNothing,
-    doWaiting,
+    doNothing,  // 정말 아무것도 안함
+
+    doWaiting, // 일반 대기
     doWalking,
-    // doSomething
+    doDraging,
+    doCounting, // 동작 멈추고 시간 잼
 }
 
 
-public class AI : MonoBehaviour
+public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    State CURSTATE = State.doNothing;
+    State CURSTATE = State.doWaiting;
 
     Animator animator;
+    Rigidbody2D rigidbd;
+
+    string jellyName;
+    int id = 0;     // 0 ~
+    int level = 0;  // 0 ~
+    int exp = 0;    // 0~ 데이터 가져오도록 해야함!
 
     // Timer
     float startTime = 0.0f;
@@ -35,23 +45,118 @@ public class AI : MonoBehaviour
     float speedX = 0.0f;
     float speedY = 0.0f;
 
+    // Touch
+    string touchTrigger = "doTouch";
+
+    // Draging
+    float dragStartTime = 1.0f;
+    Vector3 bfMousePos = Vector3.zero;
+
 
     // Start is called before the first frame update
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
-
         if(animator == null) {
             Debug.LogError("animator is null");
         }
-        
+
+        rigidbd = gameObject.GetComponent<Rigidbody2D>();
+        if(rigidbd == null) {
+            Debug.LogError("rigidbd is null");
+        }
+
+        jellyName = this.name;
+        if(jellyName == null) {
+            Debug.LogError("jellyName is null");
+        }
+
+        string acName = (animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController).name;
+        if(acName == null) {
+            Debug.LogError("acName is null");
+        }
+
+        int[] info = GameManager.Instance.GetJellyIDLev(jellyName, acName);
+        id = info[0];
+        level = info[1];
+
+        StartCoroutine(Clocking());
     }
 
     // Update is called once per frame
     void Update()
     {
-        DoAI();
         
+        DoAI();
+
+    }
+
+    // 물리 엔진 동작이 끝난 뒤인 FixedUpdate 에서 호출
+    /*
+    void FixedUpdate()
+    {
+        switch(CURSTATE) {
+            case State.doDraging:
+                {
+                    Dragging();
+                }
+                break;
+            default:
+                break; 
+        }
+    }
+    */
+
+
+    // Collider 추가 시 아래의 이벤트 이용 가능
+    // 참고) UI 의 경우 inspector 창에서 이벤트 트리거 사용 가능 (이건 UI 가 아니므로 X)
+    void OnMouseDown()
+    {
+        animator.SetTrigger(touchTrigger);
+        GetJelatine();
+        exp++;
+        ManageLev();
+
+        bfMousePos = GameManager.Instance.GetWorldPoint();
+        waitTime = dragStartTime;
+
+        CURSTATE = State.doCounting;
+    }
+
+
+    public void OnMouseDrag()
+    {
+        // Dragging();
+
+        if(CURSTATE == State.doNothing) {
+            CURSTATE = State.doDraging;
+        }
+    }
+
+    public void OnMouseUp()
+    {
+        Vector3 offset = GameManager.Instance.GetWorldPoint() - bfMousePos;
+        Vector3 inputPos = transform.position + offset;
+
+        // 경계 밖
+        if(inputPos.x < GameManager.Instance.TopLeft.x) {
+            inputPos.x = GameManager.Instance.TopLeft.x;
+        }
+        else if(inputPos.x > GameManager.Instance.BottomRight.x) {
+            inputPos.x = GameManager.Instance.BottomRight.x;
+        }
+        if(inputPos.y > GameManager.Instance.TopLeft.y) {
+            inputPos.y = GameManager.Instance.TopLeft.y;
+        }
+        else if(inputPos.y < GameManager.Instance.BottomRight.y) {
+            inputPos.y = GameManager.Instance.BottomRight.y;
+        }
+
+        transform.position = new Vector3(inputPos.x, inputPos.y, transform.position.z);
+
+        bfMousePos = Vector3.zero;
+
+        CURSTATE = State.doNothing;
     }
 
 
@@ -61,11 +166,7 @@ public class AI : MonoBehaviour
         switch(CURSTATE) {
             case State.doNothing:
                 {
-                    startTime = Time.deltaTime;
-                    timer = 0.0f;
-                    waitTime = Random.Range(3.0f, 5.0f);
 
-                    CURSTATE = State.doWaiting;
                 }
                 break;
             case State.doWaiting:
@@ -83,7 +184,7 @@ public class AI : MonoBehaviour
                     speedY = Random.Range(-0.2f, 0.2f);
 
                     animator.SetBool(walkingTrigger, true);
-
+                    
                     CURSTATE = State.doWalking;
                 }
                 break;
@@ -96,8 +197,34 @@ public class AI : MonoBehaviour
                     }
 
                     animator.SetBool(walkingTrigger, false);
+
+                    startTime = Time.deltaTime;
+                    timer = 0.0f;
+                    waitTime = Random.Range(3.0f, 5.0f);
+
+                    CURSTATE = State.doWaiting;
+                }
+                break;
+            case State.doCounting:
+                {
+                    timer += Time.deltaTime;
+                    if(timer <= waitTime) {
+                        break;
+                    }
+
+                    startTime = Time.deltaTime;
+                    timer = 0.0f;
+                    waitTime = 0.0f;
+
                     CURSTATE = State.doNothing;
                 }
+                break;
+            case State.doDraging:
+                {
+                    Dragging();
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -118,5 +245,55 @@ public class AI : MonoBehaviour
         }
     }
 
+    void Dragging()
+    {
+        Vector3 inputPos = GameManager.Instance.GetWorldPoint() - bfMousePos;
+        transform.Translate(inputPos.x, inputPos.y, 0);
+        bfMousePos = GameManager.Instance.GetWorldPoint();
+    }
+
+
+    void GetJelatine()
+    {
+        GameManager.Instance.Jelatine += (id + 1) * (level + 1);
+
+        Debug.Log(id);
+        Debug.Log(level);
+    }
+
+
+    void ManageLev()
+    {
+        if(level == 2) {
+            return;
+        }
+
+        int[] expList = GameManager.Instance.MaxExp;
+
+        if(expList[level] >= exp) {
+            return;
+        }
+
+        exp = 0;
+        level++;
+        level = (level > 2) ? 2 : level;
+
+        GameManager.Instance.ChangeAc(ref animator, level);
+    }
+
+    IEnumerator Clocking()
+    {
+        yield return new WaitForSeconds(5.0f);
+
+        // 1초마다 젤리 경험치 +1
+        while(true) {
+            exp++;
+            ManageLev();
+
+            // Debug.Log(exp);
+
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
     
 }
