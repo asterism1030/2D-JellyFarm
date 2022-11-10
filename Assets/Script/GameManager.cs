@@ -14,8 +14,11 @@ public class GameManager : MonoBehaviour
 
 
     // Valiables
+    public bool IsAnyWindowOpend = false;
+
     // [SerializeField]
     // private Camera camera;
+    private GameObject selectedJelly;
 
     private int maxNum = 999999999;
     private int[] maxExp = { 1000, 10000, 10000 };
@@ -33,11 +36,13 @@ public class GameManager : MonoBehaviour
     private Vector3 bottomRight = new Vector3(5.5f, -2.0f, 0.0f);
 
     // get set
+    public GameObject SelectedJelly { get { return selectedJelly; } set { selectedJelly = value; } }
     public Vector3[] PointList { get { return pointList; } private set { pointList = value; } }
     public Vector3 TopLeft { get { return topLeft; } private set { topLeft = value; } }
     public Vector3 BottomRight { get { return bottomRight; } private set { bottomRight = value; } }
     public int[] MaxExp { get { return maxExp; } private set { maxExp = value; } }
     public RuntimeAnimatorController[] LevelAc { get { return levelAc; } private set { levelAc = value; } }
+
     
     /*
     임시
@@ -81,7 +86,7 @@ public class GameManager : MonoBehaviour
     void LateUpdate()
     {
         // 추후에 깔끔하게 정리해야할듯
-        // 999,999,999 가 1,000,000,000 가 되는 문제 처리
+        // 숫자가 맞아 떨어지지 않음 (220 + 500 = 720 이어야하는데 719 임)
         // {매개변수:자료형 소수점자릿수}, 사용자 지정 숫자 형식 문자열, {0:#,#} = {0:N0}
         jelatineTxt.text = string.Format("{0:#,#}", (int)(Mathf.SmoothStep(float.Parse(jelatineTxt.text), jelatine, 0.5f)));
         goldTxt.text = string.Format("{0:N0}", (int)(Mathf.SmoothStep(float.Parse(goldTxt.text), gold, 0.5f)));
@@ -96,7 +101,7 @@ public class GameManager : MonoBehaviour
 
     public int[] GetJellyIDLev(string jellyName, string acNum)
     {
-        int[] info = new int[2];
+        int[] info = new int[3];
 
         // id
         for(int i = 0; i < jellyList.Length; i++) {
@@ -113,6 +118,9 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
+
+        // price
+        info[2] = priceList[info[0]];
 
         return info;
     }

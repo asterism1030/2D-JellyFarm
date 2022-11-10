@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 ////
 //  젤리의 AI 동작
@@ -26,12 +29,12 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
     State CURSTATE = State.doWaiting;
 
     Animator animator;
-    Rigidbody2D rigidbd;
 
     string jellyName;
     int id = 0;     // 0 ~
     int level = 0;  // 0 ~
-    int exp = 0;    // 0~ 데이터 가져오도록 해야함!
+    int exp = 0;    // 0 ~ 데이터 가져오도록 해야함!
+    int price = 0;
 
     // Timer
     float startTime = 0.0f;
@@ -53,6 +56,10 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
     Vector3 bfMousePos = Vector3.zero;
 
 
+    // get set
+    public int Price { get { return price; } set { price = value; } }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,17 +68,12 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
             Debug.LogError("animator is null");
         }
 
-        rigidbd = gameObject.GetComponent<Rigidbody2D>();
-        if(rigidbd == null) {
-            Debug.LogError("rigidbd is null");
-        }
-
         jellyName = this.name;
         if(jellyName == null) {
             Debug.LogError("jellyName is null");
         }
 
-        string acName = (animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController).name;
+        string acName = "Ac3"; //(animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController).name;
         if(acName == null) {
             Debug.LogError("acName is null");
         }
@@ -79,6 +81,7 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
         int[] info = GameManager.Instance.GetJellyIDLev(jellyName, acName);
         id = info[0];
         level = info[1];
+        price = info[2];
 
         StartCoroutine(Clocking());
     }
@@ -112,6 +115,10 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
     // 참고) UI 의 경우 inspector 창에서 이벤트 트리거 사용 가능 (이건 UI 가 아니므로 X)
     void OnMouseDown()
     {
+        if(GameManager.Instance.IsAnyWindowOpend == true) {
+            return;
+        }
+
         animator.SetTrigger(touchTrigger);
         GetJelatine();
         exp++;
@@ -126,15 +133,26 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
 
     public void OnMouseDrag()
     {
+        if(GameManager.Instance.IsAnyWindowOpend == true) {
+            return;
+        }
+
         // Dragging();
 
         if(CURSTATE == State.doNothing) {
+            GameManager.Instance.SelectedJelly = gameObject;
             CURSTATE = State.doDraging;
         }
     }
 
     public void OnMouseUp()
     {
+        if(GameManager.Instance.IsAnyWindowOpend == true) {
+            return;
+        }
+        
+        GameManager.Instance.SelectedJelly = null;
+
         Vector3 offset = GameManager.Instance.GetWorldPoint() - bfMousePos;
         Vector3 inputPos = transform.position + offset;
 
