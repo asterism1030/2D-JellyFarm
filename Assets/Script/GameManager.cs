@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 using System;
 using System.Globalization;
@@ -18,10 +19,21 @@ public class GameManager : MonoBehaviour
 
     // [SerializeField]
     // private Camera camera;
+
+    //TODO) 수정
+    [SerializeField]
+    private Text numGroupJellyTxt;
+
+    [SerializeField]
+    private Text clickGroupJellyTxt;
+
+    [SerializeField]
+    private GameObject JellyToCp;
+
     private GameObject selectedJelly;
 
     private int maxNum = 999999999;
-    private int[] maxExp = { 1000, 10000, 10000 };
+    private int[] maxExp = { 10, 100, 110 };
 
     [SerializeField]
     private RuntimeAnimatorController[] levelAc;
@@ -49,8 +61,16 @@ public class GameManager : MonoBehaviour
     - 저장되는 데이터
     - 젤리 오브젝트 별 ID와 Level (파싱 구현해야 될듯)
     */
+    public int curJellyNum = 0;
+
+    public int numGroupJelly = 2;
+    public int clickGroupJelly = 1;
+
+    public Sprite[] jellySpriteList;
+    public string[] jellyNameList;
+
     private int jelatine = 100;
-    private int gold = 220;
+    private int gold = 10000;
 
     private Text jelatineTxt;
     private Text goldTxt;
@@ -59,6 +79,15 @@ public class GameManager : MonoBehaviour
     public string[] jellyLev; // index = lev
 
     public int[] priceList;
+    public int[] jelatineList; // = { 100, 200, 1000, 2000, 3000, 5000,
+                               //  10000, 12000, 13000, 14000, 15000, 100000 };
+
+    public bool[] jellyUnlockInfo; //= { true, false, true, false, true, true,
+                                   // true, true, true, false, true, true };
+
+    // 원랜 배열 값이나 임시
+    public int jellyAcceptPrice = 100;
+    public int jellyClickPrice = 100;
 
     public int Jelatine { get { return jelatine; } set { jelatine = value; if(jelatine > maxNum) jelatine = maxNum; } }
     public int Gold { get { return gold; } set { gold = value; if(gold > maxNum) gold = maxNum; } }
@@ -136,5 +165,45 @@ public class GameManager : MonoBehaviour
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
+
+    public void CreateJelly(int num)
+    {
+        if(JellyToCp == null) {
+            Debug.LogError("JellyToCp is null");
+            return;
+        }
+
+        GameObject newJelly = Instantiate(JellyToCp, PointList[Random.Range(0, 2)], Quaternion.identity) as GameObject;
+        newJelly.name = "jelly " + num.ToString();
+        (newJelly.GetComponent<Renderer>() as SpriteRenderer).sprite = jellySpriteList[num];
+
+        newJelly.SetActive(true);
+    }
+
+    
+    public void SetNumGroupJellyText(int num = -1)
+    {
+        if(num == -1) {
+            numGroupJelly++;
+        }
+        else {
+            numGroupJelly = num;
+        }
+        
+        numGroupJellyTxt.text = "젤리 수용량 " + numGroupJelly.ToString();
+
+    }
+
+    public void SetClickJellyText(int num = -1)
+    {
+        if(num == -1) {
+            clickGroupJelly++;
+        }
+        else {
+            clickGroupJelly = num;
+        }
+        
+        clickGroupJellyTxt.text = "클릭 생산량 x " + clickGroupJelly.ToString();
+    }
     
 }

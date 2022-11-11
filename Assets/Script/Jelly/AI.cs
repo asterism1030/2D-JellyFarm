@@ -11,6 +11,8 @@ using UnityEditor;
 //  젤리의 AI 동작
 //
 // 몇초 기다리고 이벤트 실행
+
+// TODO) 젤리들이 겹칠때 우선순위 정리해야할듯
 ////
 
 enum State
@@ -28,9 +30,10 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
 {
     State CURSTATE = State.doWaiting;
 
-    Animator animator;
+    Animator animator = null;
+    Renderer render = null; // TODO) sortingOrder 정리
 
-    string jellyName;
+    string jellyName = "";
     int id = 0;     // 0 ~
     int level = 0;  // 0 ~
     int exp = 0;    // 0 ~ 데이터 가져오도록 해야함!
@@ -68,12 +71,18 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
             Debug.LogError("animator is null");
         }
 
+        render = gameObject.GetComponent<Renderer>();
+        if(render == null) {
+            Debug.LogError("render is null");
+        }
+
         jellyName = this.name;
         if(jellyName == null) {
             Debug.LogError("jellyName is null");
         }
 
-        string acName = "Ac3"; //(animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController).name;
+        #if UNITY_EDITOR
+        string acName = (animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController).name;
         if(acName == null) {
             Debug.LogError("acName is null");
         }
@@ -82,6 +91,9 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
         id = info[0];
         level = info[1];
         price = info[2];
+        #endif
+
+        GameManager.Instance.curJellyNum++;
 
         StartCoroutine(Clocking());
     }
@@ -110,6 +122,11 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
     }
     */
 
+    void OnDestroy()
+    {
+        GameManager.Instance.curJellyNum--;
+    }
+
 
     // Collider 추가 시 아래의 이벤트 이용 가능
     // 참고) UI 의 경우 inspector 창에서 이벤트 트리거 사용 가능 (이건 UI 가 아니므로 X)
@@ -137,6 +154,9 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
             return;
         }
 
+        // order in layer
+        render.sortingOrder = 5;
+
         // Dragging();
 
         if(CURSTATE == State.doNothing) {
@@ -150,6 +170,9 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
         if(GameManager.Instance.IsAnyWindowOpend == true) {
             return;
         }
+
+        // order in layer
+        render.sortingOrder = 0;
         
         GameManager.Instance.SelectedJelly = null;
 
@@ -273,7 +296,8 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
 
     void GetJelatine()
     {
-        GameManager.Instance.Jelatine += (id + 1) * (level + 1);
+        GameManager.Instance.Jelatine += (id + 1) * (level + 1) * (GameManager.Instance.clickGroupJelly);
+        // GameManager.Instance.Gold += (GameManager.Instance.clickGroupJelly) * 10;
 
         Debug.Log(id);
         Debug.Log(level);
