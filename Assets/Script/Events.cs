@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Events : MonoBehaviour
 {
     // TODO) GameManager 로 이동 필요
+    // TODO) OptionPanel 기능 구현 (영상의 경우 키 입력)
     [SerializeField]
     private Sprite nomalSprite;
     [SerializeField]
@@ -58,6 +59,8 @@ public class Events : MonoBehaviour
             return;
         }
 
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Sell);
+
         AI jelly = (AI)selectedJelly.GetComponent(typeof(AI));
         
         GameManager.Instance.Gold += jelly.Price;
@@ -71,6 +74,8 @@ public class Events : MonoBehaviour
     // TODO) 창 밖 눌렀을 때 창 닫기
     public void PanelShowHide()
     {
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Button);
+
         if(isShow == false) {
             PanelShow();
         }
@@ -116,23 +121,25 @@ public class Events : MonoBehaviour
 
     public void PageDown()
     {
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Button);
+
         if(curPageNum == 0) {
             return;
         }
 
         curPageNum--;
-
         ChangeJellyPanelInfo();
     }
 
     public void PageUp()
     {
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Button);
+
         if(curPageNum == 11) {
             return;
         }
 
         curPageNum++;
-
         ChangeJellyPanelInfo();
     }
 
@@ -140,22 +147,18 @@ public class Events : MonoBehaviour
     // TODO) 판넬 최초 띄울 시 적용이 안됨 (#01)
     private void ChangeJellyPanelInfo()
     {
-        // 코드 상에서 값을 초기화 해도 후의 인스펙터 창의 값을 마지막으로 받아옴
-        // Debug.Log(GameManager.Instance.jellyUnlockInfo[curPageNum]);
-        // Debug.Log(curPageNum);
-
-        // 잠금
+        // 잠금 판넬
         if(GameManager.Instance.jellyUnlockInfo[curPageNum] == false) {
             LockGroup.SetActive(true);
 
             LockjellyImage.sprite = GameManager.Instance.jellySpriteList[curPageNum];
             LockjellyCost.text = string.Format("{0:#,#}", GameManager.Instance.jelatineList[curPageNum]);
-
             jellyPage.text = string.Format("#{0:00}", (curPageNum + 1));
+
             return;
         }
 
-        // 해금
+        // 해금 판넬
         LockGroup.SetActive(false);
 
         UnlockjellyImage.sprite = GameManager.Instance.jellySpriteList[curPageNum];
@@ -170,8 +173,11 @@ public class Events : MonoBehaviour
     public void UnlockJelly()
     {
         if(GameManager.Instance.Jelatine < GameManager.Instance.jelatineList[curPageNum]) {
+            SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
+
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Unlock);
 
         GameManager.Instance.Jelatine -= GameManager.Instance.jelatineList[curPageNum];
         GameManager.Instance.jellyUnlockInfo[curPageNum] = true;
@@ -181,15 +187,17 @@ public class Events : MonoBehaviour
 
     public void BuyJelly()
     {
-        Debug.Log("0");
         if(GameManager.Instance.Gold < GameManager.Instance.priceList[curPageNum]) {
+            SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
 
         if(GameManager.Instance.curJellyNum >= GameManager.Instance.numGroupJelly) {
-            Debug.Log("1");
+            SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
+
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Buy);
 
         GameManager.Instance.Gold -= GameManager.Instance.priceList[curPageNum];
         GameManager.Instance.CreateJelly(curPageNum);
@@ -199,8 +207,11 @@ public class Events : MonoBehaviour
     public void AddJellyAccept()
     {
         if(GameManager.Instance.Gold < GameManager.Instance.jellyAcceptPrice) {
+            SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
+
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Unlock);
 
         GameManager.Instance.Gold -= GameManager.Instance.jellyAcceptPrice;
         GameManager.Instance.SetNumGroupJellyText();
@@ -210,8 +221,11 @@ public class Events : MonoBehaviour
     public void AddJellyClick()
     {
         if(GameManager.Instance.Gold < GameManager.Instance.jellyClickPrice) {
+            SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
+
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Unlock);
 
         GameManager.Instance.Gold -= GameManager.Instance.jellyClickPrice;
         GameManager.Instance.SetClickJellyText();

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using EnumManager;
 
 ////
 //  젤리의 AI 동작
@@ -15,14 +16,16 @@ using UnityEditor;
 // TODO) 젤리들이 겹칠때 우선순위 정리해야할듯
 ////
 
-enum State
-{
-    doNothing,  // 정말 아무것도 안함
+namespace EnumManager {
+    public enum State
+    {
+        doNothing,  // 정말 아무것도 안함
 
-    doWaiting, // 일반 대기
-    doWalking,
-    doDraging,
-    doCounting, // 동작 멈추고 시간 잼
+        doWaiting, // 일반 대기
+        doWalking,
+        doDraging,
+        doCounting, // 동작 멈추고 시간 잼
+    }
 }
 
 
@@ -136,10 +139,12 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
             return;
         }
 
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Touch);
+
         animator.SetTrigger(touchTrigger);
         GetJelatine();
         exp++;
-        ManageLev();
+        ChangeLev();
 
         bfMousePos = GameManager.Instance.GetWorldPoint();
         waitTime = dragStartTime;
@@ -304,7 +309,7 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
     }
 
 
-    void ManageLev()
+    void ChangeLev()
     {
         if(level == 2) {
             return;
@@ -315,6 +320,8 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
         if(expList[level] >= exp) {
             return;
         }
+
+        SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Grow);
 
         exp = 0;
         level++;
@@ -330,7 +337,7 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
         // 1초마다 젤리 경험치 +1
         while(true) {
             exp++;
-            ManageLev();
+            ChangeLev();
 
             // Debug.Log(exp);
 

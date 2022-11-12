@@ -205,5 +205,7 @@ public class GameManager : MonoBehaviour
         
         clickGroupJellyTxt.text = "클릭 생산량 x " + clickGroupJelly.ToString();
     }
+
+    
     
 }
