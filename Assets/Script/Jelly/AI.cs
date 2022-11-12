@@ -166,6 +166,9 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
 
         if(CURSTATE == State.doNothing) {
             GameManager.Instance.SelectedJelly = gameObject;
+            GameManager.Instance.SelectedJellyPrice = price;
+            GameManager.Instance.SelectedJellyLev = level;
+
             CURSTATE = State.doDraging;
         }
     }
@@ -202,7 +205,7 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
 
         bfMousePos = Vector3.zero;
 
-        CURSTATE = State.doNothing;
+        CURSTATE = State.doWalking;
     }
 
 

@@ -17,9 +17,6 @@ public class GameManager : MonoBehaviour
     // Valiables
     public bool IsAnyWindowOpend = false;
 
-    // [SerializeField]
-    // private Camera camera;
-
     //TODO) 수정
     [SerializeField]
     private Text numGroupJellyTxt;
@@ -30,7 +27,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject JellyToCp;
 
+    // jelly
     private GameObject selectedJelly;
+    private int selectedJellyPrice;
+    private int selectedJellyLev;
+
 
     private int maxNum = 999999999;
     private int[] maxExp = { 10, 100, 110 };
@@ -49,6 +50,9 @@ public class GameManager : MonoBehaviour
 
     // get set
     public GameObject SelectedJelly { get { return selectedJelly; } set { selectedJelly = value; } }
+    public int SelectedJellyPrice { get { return selectedJellyPrice; } set { selectedJellyPrice = value; } }
+    public int SelectedJellyLev { get { return selectedJellyLev; } set { selectedJellyLev = value; } }
+
     public Vector3[] PointList { get { return pointList; } private set { pointList = value; } }
     public Vector3 TopLeft { get { return topLeft; } private set { topLeft = value; } }
     public Vector3 BottomRight { get { return bottomRight; } private set { bottomRight = value; } }
@@ -69,7 +73,7 @@ public class GameManager : MonoBehaviour
     public Sprite[] jellySpriteList;
     public string[] jellyNameList;
 
-    private int jelatine = 100;
+    private int jelatine = 200;
     private int gold = 10000;
 
     private Text jelatineTxt;

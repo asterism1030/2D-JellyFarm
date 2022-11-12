@@ -53,45 +53,10 @@ public class SoundManager : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
     public void SetAndPlaySfx(EnumManager.SfxState state)
     {
         sfx.clip = audioClips[(int)state];
         sfx.Play();
-
-        /*
-        switch(state)
-        {
-            case SfxState.Button :
-                break;
-            case SfxState.Buy :
-                break;
-            case SfxState.Clear :
-                break;
-            case SfxState.Fail :
-                break;
-            case SfxState.Grow :
-                break;
-            case SfxState.PauseIn :
-                break;
-            case SfxState.PauseOut :
-                break;
-            case SfxState.Sell :
-                break;
-            case SfxState.Touch :
-                break;
-            case SfxState.Unlock :
-                break;
-            default :
-                break;
-        }
-        */
     }
 
 

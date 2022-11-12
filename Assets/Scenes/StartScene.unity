@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 72402760}
   - component: {fileID: 72402759}
   - component: {fileID: 72402763}
-  - component: {fileID: 72402762}
+  - component: {fileID: 72402764}
   m_Layer: 5
   m_Name: SellBtn
   m_TagString: Untagged
@@ -542,28 +542,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 72402757}
   m_CullTransparentMesh: 1
---- !u!114 &72402762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 72402757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c63bcb69bf2be4295c2bfe4d1dbe75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nomalSprite: {fileID: 0}
-  selectSprite: {fileID: 0}
-  animatorPanel: {fileID: 0}
-  LockGroup: {fileID: 0}
-  LockjellyImage: {fileID: 0}
-  LockjellyCost: {fileID: 0}
-  UnlockjellyImage: {fileID: 0}
-  UnlockjellyName: {fileID: 0}
-  UnlockjellyCost: {fileID: 0}
-  jellyPage: {fileID: 0}
 --- !u!114 &72402763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,8 +559,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 72402762}
-          m_TargetAssemblyTypeName: Events, Assembly-CSharp
+        - m_Target: {fileID: 72402764}
+          m_TargetAssemblyTypeName: JellyEvent, Assembly-CSharp
           m_MethodName: SellEvent
           m_Mode: 1
           m_Arguments:
@@ -593,6 +571,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &72402764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72402757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feba762f717d1e64abbd3874d3030929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &176252358
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,7 +595,7 @@ GameObject:
   - component: {fileID: 176252362}
   - component: {fileID: 176252361}
   - component: {fileID: 176252360}
-  - component: {fileID: 176252363}
+  - component: {fileID: 176252364}
   m_Layer: 5
   m_Name: JellyBtn
   m_TagString: Untagged
@@ -677,9 +667,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 176252363}
-        m_TargetAssemblyTypeName: Events, Assembly-CSharp
-        m_MethodName: PanelShowHide
+      - m_Target: {fileID: 176252364}
+        m_TargetAssemblyTypeName: PanelEvent, Assembly-CSharp
+        m_MethodName: ShowHideEvent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -727,7 +717,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 176252358}
   m_CullTransparentMesh: 1
---- !u!114 &176252363
+--- !u!114 &176252364
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -736,19 +726,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 176252358}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c63bcb69bf2be4295c2bfe4d1dbe75, type: 3}
+  m_Script: {fileID: 11500000, guid: f06e720dc60a74f4c9e939cafdc28680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nomalSprite: {fileID: 21300000, guid: d4bb5b2bf799cbe48896bb8c60334f41, type: 3}
   selectSprite: {fileID: 21300000, guid: 526edf75fa93d364fbb3eeb1a06a6f47, type: 3}
   animatorPanel: {fileID: 1945351979}
-  LockGroup: {fileID: 0}
-  LockjellyImage: {fileID: 0}
-  LockjellyCost: {fileID: 0}
-  UnlockjellyImage: {fileID: 0}
-  UnlockjellyName: {fileID: 0}
-  UnlockjellyCost: {fileID: 0}
-  jellyPage: {fileID: 0}
 --- !u!1 &176265625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1739,7 +1722,6 @@ GameObject:
   - component: {fileID: 388267739}
   - component: {fileID: 388267738}
   - component: {fileID: 388267737}
-  - component: {fileID: 388267740}
   m_Layer: 5
   m_Name: PlantPanel
   m_TagString: Untagged
@@ -1827,28 +1809,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 388267735}
   m_CullTransparentMesh: 1
---- !u!114 &388267740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 388267735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c63bcb69bf2be4295c2bfe4d1dbe75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nomalSprite: {fileID: 0}
-  selectSprite: {fileID: 0}
-  animatorPanel: {fileID: 0}
-  LockGroup: {fileID: 0}
-  LockjellyImage: {fileID: 0}
-  LockjellyCost: {fileID: 0}
-  UnlockjellyImage: {fileID: 0}
-  UnlockjellyName: {fileID: 0}
-  UnlockjellyCost: {fileID: 0}
-  jellyPage: {fileID: 0}
 --- !u!1 &410840216
 GameObject:
   m_ObjectHideFlags: 0
@@ -2274,6 +2234,7 @@ GameObject:
   - component: {fileID: 504160096}
   - component: {fileID: 504160095}
   - component: {fileID: 504160094}
+  - component: {fileID: 504160097}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -2347,9 +2308,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 388267740}
-        m_TargetAssemblyTypeName: Events, Assembly-CSharp
-        m_MethodName: AddJellyAccept
+      - m_Target: {fileID: 504160097}
+        m_TargetAssemblyTypeName: JellyEvent, Assembly-CSharp
+        m_MethodName: AddAcceptEvent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2397,6 +2358,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 504160092}
   m_CullTransparentMesh: 1
+--- !u!114 &504160097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504160092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feba762f717d1e64abbd3874d3030929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &511507903
 GameObject:
   m_ObjectHideFlags: 0
@@ -3112,6 +3085,7 @@ GameObject:
   - component: {fileID: 702847978}
   - component: {fileID: 702847977}
   - component: {fileID: 702847976}
+  - component: {fileID: 702847979}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -3185,9 +3159,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 388267740}
-        m_TargetAssemblyTypeName: Events, Assembly-CSharp
-        m_MethodName: AddJellyClick
+      - m_Target: {fileID: 702847979}
+        m_TargetAssemblyTypeName: JellyEvent, Assembly-CSharp
+        m_MethodName: AddClickEvent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3235,6 +3209,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702847974}
   m_CullTransparentMesh: 1
+--- !u!114 &702847979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702847974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feba762f717d1e64abbd3874d3030929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &758346884
 GameObject:
   m_ObjectHideFlags: 0
@@ -3323,6 +3309,7 @@ GameObject:
   - component: {fileID: 761518543}
   - component: {fileID: 761518542}
   - component: {fileID: 761518541}
+  - component: {fileID: 761518544}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -3396,13 +3383,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1945351980}
-        m_TargetAssemblyTypeName: Events, Assembly-CSharp
-        m_MethodName: BuyJelly
-        m_Mode: 1
+      - m_Target: {fileID: 761518544}
+        m_TargetAssemblyTypeName: JellyEvent, Assembly-CSharp
+        m_MethodName: BuyEvent
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1832540615}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3446,6 +3433,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 761518539}
   m_CullTransparentMesh: 1
+--- !u!114 &761518544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761518539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feba762f717d1e64abbd3874d3030929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &804129184
 GameObject:
   m_ObjectHideFlags: 0
@@ -4190,8 +4189,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1101878149}
-        m_TargetAssemblyTypeName: Events, Assembly-CSharp
-        m_MethodName: PanelShowHide
+        m_TargetAssemblyTypeName: PanelEvent, Assembly-CSharp
+        m_MethodName: ShowHideEvent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4248,19 +4247,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1101878144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c63bcb69bf2be4295c2bfe4d1dbe75, type: 3}
+  m_Script: {fileID: 11500000, guid: f06e720dc60a74f4c9e939cafdc28680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nomalSprite: {fileID: 21300000, guid: 1edfcc716ab5b4940a23aa75e0352142, type: 3}
   selectSprite: {fileID: 21300000, guid: 0cc98cf945627544e8761d70cbbbb24a, type: 3}
   animatorPanel: {fileID: 388267737}
-  LockGroup: {fileID: 0}
-  LockjellyImage: {fileID: 0}
-  LockjellyCost: {fileID: 0}
-  UnlockjellyImage: {fileID: 0}
-  UnlockjellyName: {fileID: 0}
-  UnlockjellyCost: {fileID: 0}
-  jellyPage: {fileID: 0}
 --- !u!1 &1114903414
 GameObject:
   m_ObjectHideFlags: 0
@@ -4656,8 +4648,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1945351980}
-        m_TargetAssemblyTypeName: Events, Assembly-CSharp
+      - m_Target: {fileID: 1945351981}
+        m_TargetAssemblyTypeName: JellyPanelEvent, Assembly-CSharp
         m_MethodName: PageDown
         m_Mode: 1
         m_Arguments:
@@ -6873,7 +6865,7 @@ GameObject:
   - component: {fileID: 1945351978}
   - component: {fileID: 1945351977}
   - component: {fileID: 1945351979}
-  - component: {fileID: 1945351980}
+  - component: {fileID: 1945351981}
   m_Layer: 5
   m_Name: JellyPanel
   m_TagString: Untagged
@@ -6964,7 +6956,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1945351980
+--- !u!114 &1945351981
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6973,12 +6965,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1945351975}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c63bcb69bf2be4295c2bfe4d1dbe75, type: 3}
+  m_Script: {fileID: 11500000, guid: 1adf61f6df04878459887adfca458b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomalSprite: {fileID: 0}
-  selectSprite: {fileID: 0}
-  animatorPanel: {fileID: 0}
   LockGroup: {fileID: 1936264307}
   LockjellyImage: {fileID: 176265627}
   LockjellyCost: {fileID: 511507905}
@@ -7071,9 +7060,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1945351980}
-        m_TargetAssemblyTypeName: Events, Assembly-CSharp
-        m_MethodName: UnlockJelly
+      - m_Target: {fileID: 1945351981}
+        m_TargetAssemblyTypeName: JellyPanelEvent, Assembly-CSharp
+        m_MethodName: UnlockJellyPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7758,8 +7747,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1945351980}
-        m_TargetAssemblyTypeName: Events, Assembly-CSharp
+      - m_Target: {fileID: 1945351981}
+        m_TargetAssemblyTypeName: JellyPanelEvent, Assembly-CSharp
         m_MethodName: PageUp
         m_Mode: 1
         m_Arguments:
