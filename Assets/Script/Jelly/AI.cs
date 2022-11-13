@@ -96,7 +96,7 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
         price = info[2];
         #endif
 
-        GameManager.Instance.curJellyNum++;
+        UserInfo.Instance.curJellyNum++;
 
         StartCoroutine(Clocking());
     }
@@ -127,7 +127,7 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
 
     void OnDestroy()
     {
-        GameManager.Instance.curJellyNum--;
+        UserInfo.Instance.curJellyNum--;
     }
 
 
@@ -304,8 +304,7 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
 
     void GetJelatine()
     {
-        GameManager.Instance.Jelatine += (id + 1) * (level + 1) * (GameManager.Instance.clickGroupJelly);
-        // GameManager.Instance.Gold += (GameManager.Instance.clickGroupJelly) * 10;
+        UserInfo.Instance.Jelatine += (id + 1) * (level + 1) * (UserInfo.Instance.clickGroupJelly);
 
         Debug.Log(id);
         Debug.Log(level);

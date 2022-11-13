@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
 
 
     private int maxNum = 999999999;
+    public int MaxNum  { get{ return maxNum; } set{maxNum = value;} }
+
     private int[] maxExp = { 10, 100, 110 };
 
     [SerializeField]
@@ -65,16 +67,9 @@ public class GameManager : MonoBehaviour
     - 저장되는 데이터
     - 젤리 오브젝트 별 ID와 Level (파싱 구현해야 될듯)
     */
-    public int curJellyNum = 0;
-
-    public int numGroupJelly = 2;
-    public int clickGroupJelly = 1;
 
     public Sprite[] jellySpriteList;
     public string[] jellyNameList;
-
-    private int jelatine = 200;
-    private int gold = 10000;
 
     private Text jelatineTxt;
     private Text goldTxt;
@@ -86,16 +81,9 @@ public class GameManager : MonoBehaviour
     public int[] jelatineList; // = { 100, 200, 1000, 2000, 3000, 5000,
                                //  10000, 12000, 13000, 14000, 15000, 100000 };
 
-    public bool[] jellyUnlockInfo; //= { true, false, true, false, true, true,
-                                   // true, true, true, false, true, true };
-
     // 원랜 배열 값이나 임시
     public int jellyAcceptPrice = 100;
     public int jellyClickPrice = 100;
-
-    public int Jelatine { get { return jelatine; } set { jelatine = value; if(jelatine > maxNum) jelatine = maxNum; } }
-    public int Gold { get { return gold; } set { gold = value; if(gold > maxNum) gold = maxNum; } }
-
 
     // functions
     void Awake()
@@ -121,8 +109,8 @@ public class GameManager : MonoBehaviour
         // 추후에 깔끔하게 정리해야할듯
         // 숫자가 맞아 떨어지지 않음 (220 + 500 = 720 이어야하는데 719 임)
         // {매개변수:자료형 소수점자릿수}, 사용자 지정 숫자 형식 문자열, {0:#,#} = {0:N0}
-        jelatineTxt.text = string.Format("{0:#,#}", (int)(Mathf.SmoothStep(float.Parse(jelatineTxt.text), jelatine, 0.5f)));
-        goldTxt.text = string.Format("{0:N0}", (int)(Mathf.SmoothStep(float.Parse(goldTxt.text), gold, 0.5f)));
+        jelatineTxt.text = string.Format("{0:#,#}", (int)(Mathf.SmoothStep(float.Parse(jelatineTxt.text), UserInfo.Instance.Jelatine, 0.5f)));
+        goldTxt.text = string.Format("{0:N0}", (int)(Mathf.SmoothStep(float.Parse(goldTxt.text), UserInfo.Instance.Gold, 0.5f)));
 
         if((int)float.Parse(jelatineTxt.text) > maxNum) {
             jelatineTxt.text = string.Format("{0:#,#}", maxNum);
@@ -188,26 +176,26 @@ public class GameManager : MonoBehaviour
     public void SetNumGroupJellyText(int num = -1)
     {
         if(num == -1) {
-            numGroupJelly++;
+            UserInfo.Instance.numGroupJelly++;
         }
         else {
-            numGroupJelly = num;
+            UserInfo.Instance.numGroupJelly = num;
         }
         
-        numGroupJellyTxt.text = "젤리 수용량 " + numGroupJelly.ToString();
+        numGroupJellyTxt.text = "젤리 수용량 " + UserInfo.Instance.numGroupJelly.ToString();
 
     }
 
     public void SetClickJellyText(int num = -1)
     {
         if(num == -1) {
-            clickGroupJelly++;
+            UserInfo.Instance.clickGroupJelly++;
         }
         else {
-            clickGroupJelly = num;
+            UserInfo.Instance.clickGroupJelly = num;
         }
         
-        clickGroupJellyTxt.text = "클릭 생산량 x " + clickGroupJelly.ToString();
+        clickGroupJellyTxt.text = "클릭 생산량 x " + UserInfo.Instance.clickGroupJelly.ToString();
     }
 
     

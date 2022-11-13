@@ -26,7 +26,7 @@ public class JellyEvent : MonoBehaviour
 
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Sell);
 
-        GameManager.Instance.Gold += (GameManager.Instance.SelectedJellyPrice * GameManager.Instance.SelectedJellyLev);
+        UserInfo.Instance.Gold += (GameManager.Instance.SelectedJellyPrice * GameManager.Instance.SelectedJellyLev);
         Debug.Log("sell " + GameManager.Instance.SelectedJellyPrice * GameManager.Instance.SelectedJellyLev);
 
         Destroy(selectedJelly);
@@ -47,33 +47,33 @@ public class JellyEvent : MonoBehaviour
     // overloading BuyEvent
     void BuyEvent(int num)  // num = index
     {
-        if(GameManager.Instance.Gold < GameManager.Instance.priceList[num]) {
+        if(UserInfo.Instance.Gold < GameManager.Instance.priceList[num]) {
             SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
 
-        if(GameManager.Instance.curJellyNum >= GameManager.Instance.numGroupJelly) {
+        if(UserInfo.Instance.curJellyNum >= UserInfo.Instance.numGroupJelly) {
             SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
 
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Buy);
 
-        GameManager.Instance.Gold -= GameManager.Instance.priceList[num];
+        UserInfo.Instance.Gold -= GameManager.Instance.priceList[num];
         GameManager.Instance.CreateJelly(num);
     }
     
     // 젤리 수용량
     public void AddAcceptEvent()
     {
-        if(GameManager.Instance.Gold < GameManager.Instance.jellyAcceptPrice) {
+        if(UserInfo.Instance.Gold < GameManager.Instance.jellyAcceptPrice) {
             SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
 
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Unlock);
 
-        GameManager.Instance.Gold -= GameManager.Instance.jellyAcceptPrice;
+        UserInfo.Instance.Gold -= GameManager.Instance.jellyAcceptPrice;
         GameManager.Instance.SetNumGroupJellyText();
 
     }
@@ -81,14 +81,14 @@ public class JellyEvent : MonoBehaviour
     // 젤리 클릭 배율
     public void AddClickEvent()
     {
-        if(GameManager.Instance.Gold < GameManager.Instance.jellyClickPrice) {
+        if(UserInfo.Instance.Gold < GameManager.Instance.jellyClickPrice) {
             SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
 
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Unlock);
 
-        GameManager.Instance.Gold -= GameManager.Instance.jellyClickPrice;
+        UserInfo.Instance.Gold -= GameManager.Instance.jellyClickPrice;
         GameManager.Instance.SetClickJellyText();
 
     }

@@ -54,7 +54,7 @@ public class JellyPanelEvent : MonoBehaviour
     private void RefreshPanel()
     {
         // 잠금 판넬
-        if(GameManager.Instance.jellyUnlockInfo[curPageNum] == false) {
+        if(UserInfo.Instance.JellyUnlockInfo(curPageNum) == false) {
             LockGroup.SetActive(true);
 
             LockjellyImage.sprite = GameManager.Instance.jellySpriteList[curPageNum];
@@ -78,15 +78,15 @@ public class JellyPanelEvent : MonoBehaviour
 
     public void UnlockJellyPanel()
     {
-        if(GameManager.Instance.Jelatine < GameManager.Instance.jelatineList[curPageNum]) {
+        if(UserInfo.Instance.Jelatine < GameManager.Instance.jelatineList[curPageNum]) {
             SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
             return;
         }
 
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Unlock);
 
-        GameManager.Instance.Jelatine -= GameManager.Instance.jelatineList[curPageNum];
-        GameManager.Instance.jellyUnlockInfo[curPageNum] = true;
+        UserInfo.Instance.Jelatine -= GameManager.Instance.jelatineList[curPageNum];
+        UserInfo.Instance.JellyUnlockInfo(curPageNum, true);
 
         RefreshPanel();
     }
