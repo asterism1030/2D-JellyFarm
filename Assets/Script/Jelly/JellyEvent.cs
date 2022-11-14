@@ -5,17 +5,12 @@ using System;
 using UnityEngine.UI;
 
 ///
-//  젤리와 관련된 이벤트
-//  매매, 관련 재화, 정보 등
+//  Event Trigger 등에 사용
+//  - 젤리와 관련된 이벤트
+//  -> 매매, 관련 재화, 정보 등
 ///
 public class JellyEvent : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     public void SellEvent()
     {
         GameObject selectedJelly = GameManager.Instance.SelectedJelly;
@@ -64,7 +59,7 @@ public class JellyEvent : MonoBehaviour
     }
     
     // 젤리 수용량
-    public void AddAcceptEvent()
+    public void AddAcceptEvent(Text uiTxt)
     {
         if(UserInfo.Instance.Gold < GameManager.Instance.jellyAcceptPrice) {
             SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
@@ -74,12 +69,14 @@ public class JellyEvent : MonoBehaviour
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Unlock);
 
         UserInfo.Instance.Gold -= GameManager.Instance.jellyAcceptPrice;
-        GameManager.Instance.SetNumGroupJellyText();
 
+        UserInfo.Instance.numGroupJelly++;
+        if(uiTxt != null)
+            uiTxt.text = GameInfo.Instance.JellyAcceptStr + UserInfo.Instance.numGroupJelly.ToString();
     }
 
     // 젤리 클릭 배율
-    public void AddClickEvent()
+    public void AddClickEvent(Text uiTxt)
     {
         if(UserInfo.Instance.Gold < GameManager.Instance.jellyClickPrice) {
             SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Fail);
@@ -89,8 +86,11 @@ public class JellyEvent : MonoBehaviour
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Unlock);
 
         UserInfo.Instance.Gold -= GameManager.Instance.jellyClickPrice;
-        GameManager.Instance.SetClickJellyText();
 
+        UserInfo.Instance.clickGroupJelly++;
+        if(uiTxt != null)
+            uiTxt.text = GameInfo.Instance.JellyClickStr + UserInfo.Instance.clickGroupJelly.ToString();
     }
+
 
 }

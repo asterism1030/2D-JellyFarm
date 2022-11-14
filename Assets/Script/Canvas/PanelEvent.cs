@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 ///
-//  각 판넬에 대한 이벤트
+//  판넬 기본 이벤트
 ///
 public class PanelEvent : MonoBehaviour
 {
@@ -28,7 +28,6 @@ public class PanelEvent : MonoBehaviour
     }
 
     // OnClick
-    // TODO) 창 밖 눌렀을 때 창 닫기
     public void ShowHideEvent()
     {
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Button);

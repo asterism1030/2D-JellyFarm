@@ -17,13 +17,6 @@ public class GameManager : MonoBehaviour
     // Valiables
     public bool IsAnyWindowOpend = false;
 
-    //TODO) 수정
-    [SerializeField]
-    private Text numGroupJellyTxt;
-
-    [SerializeField]
-    private Text clickGroupJellyTxt;
-
     [SerializeField]
     private GameObject JellyToCp;
 
@@ -32,33 +25,14 @@ public class GameManager : MonoBehaviour
     private int selectedJellyPrice;
     private int selectedJellyLev;
 
-
-    private int maxNum = 999999999;
-    public int MaxNum  { get{ return maxNum; } set{maxNum = value;} }
-
-    private int[] maxExp = { 10, 100, 110 };
-
     [SerializeField]
     private RuntimeAnimatorController[] levelAc;
-
-    private Vector3[] pointList = {
-            new Vector3(-3.0f, 1.0f, 0.0f),
-            new Vector3(3.0f, -1.0f, 0.0f),
-            new Vector3(0.0f, 0.0f, 0.0f)
-        };
-
-    private Vector3 topLeft = new Vector3(-5.5f, 1.0f, 0.0f);
-    private Vector3 bottomRight = new Vector3(5.5f, -2.0f, 0.0f);
 
     // get set
     public GameObject SelectedJelly { get { return selectedJelly; } set { selectedJelly = value; } }
     public int SelectedJellyPrice { get { return selectedJellyPrice; } set { selectedJellyPrice = value; } }
     public int SelectedJellyLev { get { return selectedJellyLev; } set { selectedJellyLev = value; } }
 
-    public Vector3[] PointList { get { return pointList; } private set { pointList = value; } }
-    public Vector3 TopLeft { get { return topLeft; } private set { topLeft = value; } }
-    public Vector3 BottomRight { get { return bottomRight; } private set { bottomRight = value; } }
-    public int[] MaxExp { get { return maxExp; } private set { maxExp = value; } }
     public RuntimeAnimatorController[] LevelAc { get { return levelAc; } private set { levelAc = value; } }
 
     
@@ -112,11 +86,11 @@ public class GameManager : MonoBehaviour
         jelatineTxt.text = string.Format("{0:#,#}", (int)(Mathf.SmoothStep(float.Parse(jelatineTxt.text), UserInfo.Instance.Jelatine, 0.5f)));
         goldTxt.text = string.Format("{0:N0}", (int)(Mathf.SmoothStep(float.Parse(goldTxt.text), UserInfo.Instance.Gold, 0.5f)));
 
-        if((int)float.Parse(jelatineTxt.text) > maxNum) {
-            jelatineTxt.text = string.Format("{0:#,#}", maxNum);
+        if((int)float.Parse(jelatineTxt.text) > GameInfo.Instance.MaxJelatine) {
+            jelatineTxt.text = string.Format("{0:#,#}", GameInfo.Instance.MaxJelatine);
         }
-        if((int)float.Parse(goldTxt.text) > maxNum) {
-            goldTxt.text = string.Format("{0:N0}", maxNum);
+        if((int)float.Parse(goldTxt.text) > GameInfo.Instance.MaxGold) {
+            goldTxt.text = string.Format("{0:N0}", GameInfo.Instance.MaxGold);
         }
     }
 
@@ -165,39 +139,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        GameObject newJelly = Instantiate(JellyToCp, PointList[Random.Range(0, 2)], Quaternion.identity) as GameObject;
+        GameObject newJelly = Instantiate(JellyToCp, GameInfo.Instance.PointList[Random.Range(0, 2)], Quaternion.identity) as GameObject;
         newJelly.name = "jelly " + num.ToString();
         (newJelly.GetComponent<Renderer>() as SpriteRenderer).sprite = jellySpriteList[num];
 
         newJelly.SetActive(true);
     }
-
-    
-    public void SetNumGroupJellyText(int num = -1)
-    {
-        if(num == -1) {
-            UserInfo.Instance.numGroupJelly++;
-        }
-        else {
-            UserInfo.Instance.numGroupJelly = num;
-        }
-        
-        numGroupJellyTxt.text = "젤리 수용량 " + UserInfo.Instance.numGroupJelly.ToString();
-
-    }
-
-    public void SetClickJellyText(int num = -1)
-    {
-        if(num == -1) {
-            UserInfo.Instance.clickGroupJelly++;
-        }
-        else {
-            UserInfo.Instance.clickGroupJelly = num;
-        }
-        
-        clickGroupJellyTxt.text = "클릭 생산량 x " + UserInfo.Instance.clickGroupJelly.ToString();
-    }
-
-    
     
 }

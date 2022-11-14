@@ -1529,7 +1529,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328494657}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.4057915, y: 2.512416, z: -0.069547}
+  m_LocalPosition: {x: 2.12, y: 2.512416, z: -0.069547}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2311,10 +2311,10 @@ MonoBehaviour:
       - m_Target: {fileID: 504160097}
         m_TargetAssemblyTypeName: JellyEvent, Assembly-CSharp
         m_MethodName: AddAcceptEvent
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1469620126}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3162,10 +3162,10 @@ MonoBehaviour:
       - m_Target: {fileID: 702847979}
         m_TargetAssemblyTypeName: JellyEvent, Assembly-CSharp
         m_MethodName: AddClickEvent
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1633932895}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5680,7 +5680,6 @@ GameObject:
   - component: {fileID: 1469620125}
   - component: {fileID: 1469620127}
   - component: {fileID: 1469620126}
-  - component: {fileID: 1469620128}
   m_Layer: 5
   m_Name: SubText
   m_TagString: Untagged
@@ -5750,20 +5749,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1469620124}
   m_CullTransparentMesh: 1
---- !u!114 &1469620128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1469620124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1329a4332275c1e4fb30181af1f9940a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Txt: {fileID: 1469620126}
-  defaultStr: "\uC824\uB9AC \uC218\uC6A9\uB7C9"
 --- !u!1 &1523443664
 GameObject:
   m_ObjectHideFlags: 0
@@ -6795,6 +6780,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1854289118}
   - component: {fileID: 1854289117}
+  - component: {fileID: 1854289119}
   m_Layer: 0
   m_Name: InfoManager
   m_TagString: Untagged
@@ -6832,6 +6818,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1854289119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854289116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9d97b0fc9ebf249a076e8b8f4dcb6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1936264307
 GameObject:
   m_ObjectHideFlags: 0

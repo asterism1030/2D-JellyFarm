@@ -50,7 +50,6 @@ public class JellyPanelEvent : MonoBehaviour
     }
 
 
-    // TODO) 판넬 최초 띄울 시 적용이 안됨 (#01)
     private void RefreshPanel()
     {
         // 잠금 판넬

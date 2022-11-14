@@ -11,15 +11,12 @@ using EnumManager;
 ////
 //  젤리의 AI 동작
 //
-// 몇초 기다리고 이벤트 실행
-
-// TODO) 젤리들이 겹칠때 우선순위 정리해야할듯
 ////
 
 namespace EnumManager {
     public enum State
     {
-        doNothing,  // 정말 아무것도 안함
+        doNothing,  // 아무것도 안함
 
         doWaiting, // 일반 대기
         doWalking,
@@ -29,12 +26,12 @@ namespace EnumManager {
 }
 
 
-public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class AI : MonoBehaviour
 {
     State CURSTATE = State.doWaiting;
 
     Animator animator = null;
-    Renderer render = null; // TODO) sortingOrder 정리
+    Renderer render = null;
 
     string jellyName = "";
     int id = 0;     // 0 ~
@@ -109,21 +106,6 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
 
     }
 
-    // 물리 엔진 동작이 끝난 뒤인 FixedUpdate 에서 호출
-    /*
-    void FixedUpdate()
-    {
-        switch(CURSTATE) {
-            case State.doDraging:
-                {
-                    Dragging();
-                }
-                break;
-            default:
-                break; 
-        }
-    }
-    */
 
     void OnDestroy()
     {
@@ -131,8 +113,6 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
     }
 
 
-    // Collider 추가 시 아래의 이벤트 이용 가능
-    // 참고) UI 의 경우 inspector 창에서 이벤트 트리거 사용 가능 (이건 UI 가 아니므로 X)
     void OnMouseDown()
     {
         if(GameManager.Instance.IsAnyWindowOpend == true) {
@@ -188,17 +168,17 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
         Vector3 inputPos = transform.position + offset;
 
         // 경계 밖
-        if(inputPos.x < GameManager.Instance.TopLeft.x) {
-            inputPos.x = GameManager.Instance.TopLeft.x;
+        if(inputPos.x < GameInfo.Instance.TopLeft.x) {
+            inputPos.x = GameInfo.Instance.TopLeft.x;
         }
-        else if(inputPos.x > GameManager.Instance.BottomRight.x) {
-            inputPos.x = GameManager.Instance.BottomRight.x;
+        else if(inputPos.x > GameInfo.Instance.BottomRight.x) {
+            inputPos.x = GameInfo.Instance.BottomRight.x;
         }
-        if(inputPos.y > GameManager.Instance.TopLeft.y) {
-            inputPos.y = GameManager.Instance.TopLeft.y;
+        if(inputPos.y > GameInfo.Instance.TopLeft.y) {
+            inputPos.y = GameInfo.Instance.TopLeft.y;
         }
-        else if(inputPos.y < GameManager.Instance.BottomRight.y) {
-            inputPos.y = GameManager.Instance.BottomRight.y;
+        else if(inputPos.y < GameInfo.Instance.BottomRight.y) {
+            inputPos.y = GameInfo.Instance.BottomRight.y;
         }
 
         transform.position = new Vector3(inputPos.x, inputPos.y, transform.position.z);
@@ -284,10 +264,10 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
         Vector3 pos = transform.position;
 
         // 경계 밖
-        if(pos.x < GameManager.Instance.TopLeft.x || pos.x > GameManager.Instance.BottomRight.x
-        || pos.y > GameManager.Instance.TopLeft.y || pos.y < GameManager.Instance.BottomRight.y) {
+        if(pos.x < GameInfo.Instance.TopLeft.x || pos.x > GameInfo.Instance.BottomRight.x
+        || pos.y > GameInfo.Instance.TopLeft.y || pos.y < GameInfo.Instance.BottomRight.y) {
             int index = Random.Range(0, 2);
-            transform.position = Vector3.MoveTowards(transform.position, GameManager.Instance.PointList[index], Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, GameInfo.Instance.PointList[index], Time.deltaTime);
         }
         else {
             transform.Translate(Time.deltaTime * speedX, Time.deltaTime * speedY, 0);
@@ -317,7 +297,7 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
             return;
         }
 
-        int[] expList = GameManager.Instance.MaxExp;
+        int[] expList = GameInfo.Instance.MaxExp;
 
         if(expList[level] >= exp) {
             return;
@@ -340,8 +320,6 @@ public class AI : MonoBehaviour //, IBeginDragHandler, IDragHandler, IEndDragHan
         while(true) {
             exp++;
             ChangeLev();
-
-            // Debug.Log(exp);
 
             yield return new WaitForSeconds(1.0f);
         }

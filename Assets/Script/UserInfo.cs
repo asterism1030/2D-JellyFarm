@@ -25,8 +25,8 @@ public class UserInfo : MonoBehaviour
     public int CurJellyNum { get { return curJellyNum; } set { curJellyNum = value; } }
     public int NumGroupJelly { get { return numGroupJelly; } set { numGroupJelly = value; } }
     public int ClickGroupJelly { get { return clickGroupJelly; } set { clickGroupJelly = value; } }
-    public int Jelatine { get { return jelatine; } set { jelatine = value; if(jelatine > GameManager.Instance.MaxNum) jelatine = GameManager.Instance.MaxNum; } }
-    public int Gold { get { return gold; } set { gold = value; if(gold > GameManager.Instance.MaxNum) gold = GameManager.Instance.MaxNum; } }
+    public int Jelatine { get { return jelatine; } set { jelatine = value; if(jelatine > GameInfo.Instance.MaxJelatine) jelatine = GameInfo.Instance.MaxJelatine; } }
+    public int Gold { get { return gold; } set { gold = value; if(gold > GameInfo.Instance.MaxGold) gold = GameInfo.Instance.MaxGold; } }
 
     public bool JellyUnlockInfo(int index) {
         return jellyUnlockInfo[index];

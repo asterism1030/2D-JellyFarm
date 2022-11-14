@@ -7,9 +7,9 @@ using UnityEngine;
 ////
 public class Scrolling : MonoBehaviour
 {
-    float startPosition = -8.0f;
+    float startPosition = -6.0f;
     float endPosition = 5.0f;
-    float speed = 0.1f;
+    float speed = 0.2f;
 
     // Start is called before the first frame update
     void Start()
