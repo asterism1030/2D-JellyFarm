@@ -21,27 +21,23 @@ public class GameManager : MonoBehaviour
     private GameObject JellyToCp;
 
     // jelly
-    private GameObject selectedJelly;
-    private int selectedJellyPrice;
-    private int selectedJellyLev;
+    private AI selectedJelly;
 
     [SerializeField]
     private RuntimeAnimatorController[] levelAc;
 
     // get set
-    public GameObject SelectedJelly { get { return selectedJelly; } set { selectedJelly = value; } }
-    public int SelectedJellyPrice { get { return selectedJellyPrice; } set { selectedJellyPrice = value; } }
-    public int SelectedJellyLev { get { return selectedJellyLev; } set { selectedJellyLev = value; } }
+    public AI SelectedJelly { get { return selectedJelly; } set { selectedJelly = value; } }
+    public int SelectedJellyPrice { get { if(selectedJelly != null) return selectedJelly.Price; return 0; } }
+    public int SelectedJellyLev { get { if(selectedJelly != null) return selectedJelly.Level; return 0; } }
 
     public RuntimeAnimatorController[] LevelAc { get { return levelAc; } private set { levelAc = value; } }
 
     
     /*
-    임시
     - 저장되는 데이터
-    - 젤리 오브젝트 별 ID와 Level (파싱 구현해야 될듯)
+    - 젤리 오브젝트 별 ID와 Level
     */
-
     public Sprite[] jellySpriteList;
     public string[] jellyNameList;
 
@@ -55,7 +51,6 @@ public class GameManager : MonoBehaviour
     public int[] jelatineList; // = { 100, 200, 1000, 2000, 3000, 5000,
                                //  10000, 12000, 13000, 14000, 15000, 100000 };
 
-    // 원랜 배열 값이나 임시
     public int jellyAcceptPrice = 100;
     public int jellyClickPrice = 100;
 
@@ -80,7 +75,6 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-        // 추후에 깔끔하게 정리해야할듯
         // 숫자가 맞아 떨어지지 않음 (220 + 500 = 720 이어야하는데 719 임)
         // {매개변수:자료형 소수점자릿수}, 사용자 지정 숫자 형식 문자열, {0:#,#} = {0:N0}
         jelatineTxt.text = string.Format("{0:#,#}", (int)(Mathf.SmoothStep(float.Parse(jelatineTxt.text), UserInfo.Instance.Jelatine, 0.5f)));

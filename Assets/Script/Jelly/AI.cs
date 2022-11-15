@@ -12,15 +12,12 @@ using EnumManager;
 //  젤리의 AI 동작
 //
 ////
-
 namespace EnumManager {
     public enum State
     {
         doNothing,  // 아무것도 안함
-
         doWaiting, // 일반 대기
         doWalking,
-        doDraging,
         doCounting, // 동작 멈추고 시간 잼
     }
 }
@@ -61,9 +58,9 @@ public class AI : MonoBehaviour
 
     // get set
     public int Price { get { return price; } set { price = value; } }
+    public int Level { get { return level; } }
 
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
@@ -98,7 +95,7 @@ public class AI : MonoBehaviour
         StartCoroutine(Clocking());
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         
@@ -110,6 +107,7 @@ public class AI : MonoBehaviour
     void OnDestroy()
     {
         UserInfo.Instance.curJellyNum--;
+        Destroy(gameObject);
     }
 
 
@@ -120,6 +118,9 @@ public class AI : MonoBehaviour
         }
 
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Touch);
+        
+        // order in layer
+        render.sortingOrder = 5;
 
         animator.SetTrigger(touchTrigger);
         GetJelatine();
@@ -128,7 +129,6 @@ public class AI : MonoBehaviour
 
         bfMousePos = GameManager.Instance.GetWorldPoint();
         waitTime = dragStartTime;
-
         CURSTATE = State.doCounting;
     }
 
@@ -139,18 +139,15 @@ public class AI : MonoBehaviour
             return;
         }
 
-        // order in layer
-        render.sortingOrder = 5;
-
-        // Dragging();
-
-        if(CURSTATE == State.doNothing) {
-            GameManager.Instance.SelectedJelly = gameObject;
-            GameManager.Instance.SelectedJellyPrice = price;
-            GameManager.Instance.SelectedJellyLev = level;
-
-            CURSTATE = State.doDraging;
+        if(CURSTATE == State.doCounting) {
+            return;
         }
+
+        GameManager.Instance.SelectedJelly = this;
+
+        Vector3 inputPos = GameManager.Instance.GetWorldPoint() - bfMousePos;
+        transform.Translate(inputPos.x, inputPos.y, 0);
+        bfMousePos = GameManager.Instance.GetWorldPoint();
     }
 
     public void OnMouseUp()
@@ -182,7 +179,6 @@ public class AI : MonoBehaviour
         }
 
         transform.position = new Vector3(inputPos.x, inputPos.y, transform.position.z);
-
         bfMousePos = Vector3.zero;
 
         CURSTATE = State.doWalking;
@@ -200,57 +196,36 @@ public class AI : MonoBehaviour
                 break;
             case State.doWaiting:
                 {
-                    timer += Time.deltaTime;
-                    if(timer <= waitTime) {
+                    bool isTimerRunning = AITimer(walkingDuration);
+
+                    if(isTimerRunning == true) {
                         break;
                     }
-
-                    startTime = Time.deltaTime;
-                    timer = 0.0f;
-                    waitTime = walkingDuration;
 
                     speedX = Random.Range(-0.2f, 0.2f);
                     speedY = Random.Range(-0.2f, 0.2f);
 
                     animator.SetBool(walkingTrigger, true);
-                    
                     CURSTATE = State.doWalking;
                 }
                 break;
             case State.doWalking:
                 {
-                    timer += Time.deltaTime;
-                    if(timer <= waitTime) {
+                    bool isTimerRunning = AITimer(Random.Range(3.0f, 5.0f));
+
+                    if(isTimerRunning == true) {
                         Walking();
                         break;
                     }
 
                     animator.SetBool(walkingTrigger, false);
-
-                    startTime = Time.deltaTime;
-                    timer = 0.0f;
-                    waitTime = Random.Range(3.0f, 5.0f);
-
                     CURSTATE = State.doWaiting;
                 }
                 break;
             case State.doCounting:
                 {
-                    timer += Time.deltaTime;
-                    if(timer <= waitTime) {
-                        break;
-                    }
-
-                    startTime = Time.deltaTime;
-                    timer = 0.0f;
-                    waitTime = 0.0f;
-
+                    AITimer(0.0f);
                     CURSTATE = State.doNothing;
-                }
-                break;
-            case State.doDraging:
-                {
-                    Dragging();
                 }
                 break;
             default:
@@ -258,6 +233,22 @@ public class AI : MonoBehaviour
         }
     }
 
+
+    // Use In doAI
+    // return isAITimer is running
+    bool AITimer(float setTime)
+    {
+        timer += Time.deltaTime;
+        if(timer <= waitTime) {
+            return true;
+        }
+
+        startTime = Time.deltaTime;
+        timer = 0.0f;
+        waitTime = setTime;
+
+        return false;
+    }
 
     void Walking()
     {
@@ -274,14 +265,8 @@ public class AI : MonoBehaviour
         }
     }
 
-    void Dragging()
-    {
-        Vector3 inputPos = GameManager.Instance.GetWorldPoint() - bfMousePos;
-        transform.Translate(inputPos.x, inputPos.y, 0);
-        bfMousePos = GameManager.Instance.GetWorldPoint();
-    }
 
-
+    // Etc Function
     void GetJelatine()
     {
         UserInfo.Instance.Jelatine += (id + 1) * (level + 1) * (UserInfo.Instance.clickGroupJelly);
@@ -312,14 +297,16 @@ public class AI : MonoBehaviour
         GameManager.Instance.ChangeAc(ref animator, level);
     }
 
+    // IEnumerator
     IEnumerator Clocking()
     {
         yield return new WaitForSeconds(5.0f);
 
-        // 1초마다 젤리 경험치 +1
+        // 1초마다 젤리 경험치 +1, 골드 생산
         while(true) {
             exp++;
             ChangeLev();
+            UserInfo.Instance.Gold += (level * price) / 10;
 
             yield return new WaitForSeconds(1.0f);
         }

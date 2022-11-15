@@ -13,7 +13,7 @@ public class JellyEvent : MonoBehaviour
 {
     public void SellEvent()
     {
-        GameObject selectedJelly = GameManager.Instance.SelectedJelly;
+        AI selectedJelly = GameManager.Instance.SelectedJelly;
 
         if(selectedJelly == null) {
             return;
@@ -21,12 +21,16 @@ public class JellyEvent : MonoBehaviour
 
         SoundManager.Instance.SetAndPlaySfx(EnumManager.SfxState.Sell);
 
-        UserInfo.Instance.Gold += (GameManager.Instance.SelectedJellyPrice * GameManager.Instance.SelectedJellyLev);
+        if(selectedJelly.Level == 0) {
+            UserInfo.Instance.Gold += (selectedJelly.Price * 1);
+        }
+        else {
+            UserInfo.Instance.Gold += (selectedJelly.Price * selectedJelly.Level);
+        }
+        
         Debug.Log("sell " + GameManager.Instance.SelectedJellyPrice * GameManager.Instance.SelectedJellyLev);
 
         Destroy(selectedJelly);
-        GameManager.Instance.SelectedJellyPrice = 0;
-        GameManager.Instance.SelectedJellyLev = 0;
        
     }
 
