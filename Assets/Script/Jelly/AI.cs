@@ -63,6 +63,7 @@ public class AI : MonoBehaviour
 
     void Start()
     {
+
         animator = gameObject.GetComponent<Animator>();
         if(animator == null) {
             Debug.LogError("animator is null");
@@ -143,7 +144,7 @@ public class AI : MonoBehaviour
             return;
         }
 
-        GameManager.Instance.SelectedJelly = this;
+        // GameManager.Instance.SelectedJelly = this;
 
         Vector3 inputPos = GameManager.Instance.GetWorldPoint() - bfMousePos;
         transform.Translate(inputPos.x, inputPos.y, 0);

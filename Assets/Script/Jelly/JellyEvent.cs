@@ -13,7 +13,7 @@ public class JellyEvent : MonoBehaviour
 {
     public void SellEvent()
     {
-        AI selectedJelly = GameManager.Instance.SelectedJelly;
+        Jelly selectedJelly = GameManager.Instance.SelectedJelly;
 
         if(selectedJelly == null) {
             return;
