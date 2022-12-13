@@ -7,6 +7,9 @@ using Random = UnityEngine.Random;
 using System;
 using System.Globalization;
 
+
+enum MouseState { LBTN, RBTN, WHEELE }
+
 public class GameManager : MonoBehaviour
 {
     // Singletone
@@ -17,17 +20,28 @@ public class GameManager : MonoBehaviour
     // Valiables
     public bool IsAnyWindowOpend = false;
 
+    // Trigger String
+    private string walkingTrigger = "isWalk";
+    private string touchTrigger = "doTouch";
+    private int clickedSortingOrder = 5;
+    private int defaultSortingOrder = 0;
+
     [SerializeField]
     private GameObject JellyToCp;
-
+    
     // jelly
-    private AI selectedJelly;
+    private Jelly selectedJelly;
 
     [SerializeField]
     private RuntimeAnimatorController[] levelAc;
 
     // get set
-    public AI SelectedJelly { get { return selectedJelly; } set { selectedJelly = value; } }
+    public string WalkigTrigger { get { return walkingTrigger; } }
+    public string TouchTrigger { get { return touchTrigger; } }
+    public int ClickedSortingOrder { get { return clickedSortingOrder; } }
+    public int DefaultSortingOrder { get { return defaultSortingOrder; } }
+
+    public Jelly SelectedJelly { get { return selectedJelly; } set { selectedJelly = value; } }
     public int SelectedJellyPrice { get { if(selectedJelly != null) return selectedJelly.Price; return 0; } }
     public int SelectedJellyLev { get { if(selectedJelly != null) return selectedJelly.Level; return 0; } }
 
