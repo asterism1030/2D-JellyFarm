@@ -80,7 +80,7 @@ public class FSMMachine : BaseFSM
             {
                 idleActs[curAct].LogicUpdate();
 
-                // isExit ?
+                // isExit
                 if(idleActs[curAct].isExit == true) {
                     curState = State.EXIT;
                 }
